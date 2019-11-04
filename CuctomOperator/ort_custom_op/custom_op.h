@@ -18,9 +18,6 @@ struct OrtTensorDimensions : std::vector<int64_t> {
   }
 };
 
-template <typename T, size_t N>
-constexpr size_t countof(T (&)[N]) { return N; }
-
 template <typename T>
 struct GroupNormKernel {
 	private:

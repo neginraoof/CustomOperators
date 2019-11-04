@@ -212,7 +212,7 @@ include_directories(<PATH_TO_EIGEN_HEADER_FILE>)
 An example ```CMakeLists.txt``` file we could be found [here](https://github.com/neginraoof/CustomOperators/blob/master/CuctomOperator/ort_custom_op/CMakeLists.txt).
 This cmake file includes required configurations for compiling the unit test code as well.
 
-Once you have the cmake file, create a build directory from the same location and try ```cd build```. Execute the command ```cmake ..``` to configure the project and build it using ```make```.
+Once you have the cmake file, create a build directory from the same location and try ```cd build```. Execute the command ```cmake ..``` to configure the project and build it using ```make``` command.
 
 Now that you have registered your operator, you should be able to run your model and test it. You can find an example custom operator unit test source code [here](https://github.com/neginraoof/CustomOperators/blob/master/CuctomOperator/ort_custom_op/custom_op_test.cc). 
 
