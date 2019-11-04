@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4ae74fdb-999a-4dd3-9e8c-db2af97fc90c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ort_custom_op/main.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ort_custom_op/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ort_custom_op/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ort_custom_op/custom_op.cc" beforeDir="false" afterPath="$PROJECT_DIR$/ort_custom_op/custom_op.cc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ort_custom_op/custom_op.cc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ort_custom_op/custom_op.h" beforeDir="false" afterPath="$PROJECT_DIR$/ort_custom_op/custom_op.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ort_custom_op/custom_op_test.cc" beforeDir="false" afterPath="$PROJECT_DIR$/ort_custom_op/custom_op_test.cc" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,16 +20,6 @@
               <caret line="8" column="58" selection-start-line="8" selection-start-column="58" selection-end-line="8" selection-end-column="58" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ort_custom_op/build/CMakeCache.txt">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ort_custom_op/main.cc">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -59,20 +45,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ort_custom_op/custom_op.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
-              <caret line="33" column="25" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="25" />
+            <state relative-caret-position="45">
+              <caret line="3" selection-start-line="3" selection-end-line="3" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ort_custom_op/custom_op_test.cc">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
+            <state relative-caret-position="260">
+              <caret line="134" column="12" selection-start-line="134" selection-start-column="2" selection-end-line="134" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -80,8 +66,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ort_custom_op/custom_op.cc">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="478">
-              <caret line="49" column="29" selection-start-line="49" selection-start-column="29" selection-end-line="49" selection-end-column="29" />
+            <state relative-caret-position="390">
+              <caret line="31" column="19" selection-start-line="31" selection-start-column="19" selection-end-line="31" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -105,17 +91,14 @@
       <find>session_options</find>
       <find>void com</find>
       <find>pth</find>
-      <find>groupn</find>
       <find>int</find>
       <find>Y_tensor_shape</find>
       <find>B_data</find>
       <find>eigen</find>
       <find>test</find>
       <find>OrtApi</find>
-      <find>input</find>
       <find>run</find>
       <find>struc</find>
-      <find>GroupNormCustomOp</find>
       <find>cout</find>
       <find>GroupNormKernel</find>
       <find>const OrtApi</find>
@@ -125,8 +108,11 @@
       <find>OrtTensorDimensions</find>
       <find>OrtGetApiBase</find>
       <find>OrtReleas</find>
-      <find>g_ort</find>
       <find>customop</find>
+      <find>input</find>
+      <find>g_ort</find>
+      <find>groupn</find>
+      <find>GroupNormCustomOp</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -150,12 +136,12 @@
         <option value="$PROJECT_DIR$/pytorch_custom_op/custom_group_norm.cpp" />
         <option value="$PROJECT_DIR$/pytorch_custom_op/export_custom_op.py" />
         <option value="$PROJECT_DIR$/ort_custom_op/main.cc" />
-        <option value="$PROJECT_DIR$/ort_custom_op/custom_op.cc" />
         <option value="$PROJECT_DIR$/ort_custom_op/Test/custom_op_test.cc" />
-        <option value="$PROJECT_DIR$/ort_custom_op/custom_op.h" />
         <option value="$PROJECT_DIR$/ort_custom_op/Test/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/ort_custom_op/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/ort_custom_op/custom_op_test.cc" />
+        <option value="$PROJECT_DIR$/ort_custom_op/custom_op.cc" />
+        <option value="$PROJECT_DIR$/ort_custom_op/custom_op.h" />
       </list>
     </option>
   </component>
@@ -238,11 +224,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-2" width="1920" height="1202" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.18239325" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="0" visible="true" weight="0.361603" />
+      <window_info anchor="bottom" id="Terminal" order="0" visible="true" weight="0.38303822" />
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="2" />
       <window_info anchor="bottom" id="Message" order="3" />
@@ -317,13 +304,6 @@
     <entry file="file://$PROJECT_DIR$/ort_custom_op/build/CMakeCache.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/ort_custom_op/custom_op.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="33" column="25" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ort_custom_op/Test/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -338,17 +318,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ort_custom_op/custom_op.cc">
+    <entry file="file://$PROJECT_DIR$/ort_custom_op/custom_op_test.cc">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="478">
-          <caret line="49" column="29" selection-start-line="49" selection-start-column="29" selection-end-line="49" selection-end-column="29" />
+        <state relative-caret-position="260">
+          <caret line="134" column="12" selection-start-line="134" selection-start-column="2" selection-end-line="134" selection-end-column="19" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ort_custom_op/custom_op_test.cc">
+    <entry file="file://$PROJECT_DIR$/ort_custom_op/custom_op.cc">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
+        <state relative-caret-position="390">
+          <caret line="31" column="19" selection-start-line="31" selection-start-column="19" selection-end-line="31" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ort_custom_op/custom_op.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
     </entry>
