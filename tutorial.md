@@ -133,14 +133,15 @@ First, you need to create a custim domain of type ```Ort::CustomOpDomain```. Thi
 ```cpp
 Ort::CustomOpDomain custom_op_domain("org.pytorch.mydomain");
 ```
-Next, you need to create a custom kernel and  ```ORT::CustomOp``` struct, and add it to your custom domain. You can find an example [here](https://www.google.com) 
+Next, you need to create a custom kernel and  ```ORT::CustomOp``` struct, and add it to your custom domain. You can find an example [here](https://github.com/neginraoof/CustomOperators/blob/master/CuctomOperator/ort_custom_op/custom_op.h)
+The Compute function is implemented [here](https://github.com/neginraoof/CustomOperators/blob/master/CuctomOperator/ort_custom_op/custom_op.cc).
 Once you have the custom kernel and schema, you can add them to the domain using the C API as below:
 ```cpp
 GroupNormCustomOp custom_op;
 custom_op_domain.Add(&custom_op);
 ```
 
-Here you can find our example group norm implementation along with a sample ONNX Runtime unit test to verify the expected output.
+In the repository, you can find our example group norm implementation along with a sample ONNX Runtime unit test to verify the expected output.
 To build your custom operator with the reuiqred dependencies, you can use cmake. Add a file named ```CMakeLists.txt``` under the same directory where you have the ONNX Runtime source files.
 
 You can link the reuiqred libraries using ```target_link_libraries```:
@@ -150,10 +151,11 @@ target_link_libraries(customop PUBLIC ${ONNXRUNTIME_LIBRARY})
 And include the required headers using ```include_directories```
 include_directories(<PATH_TO_EIGEN_HEADER_FILE>)
 
-The example ```CMakeLists.txt``` file we could be found [here]().
+An example ```CMakeLists.txt``` file we could be found [here](https://github.com/neginraoof/CustomOperators/blob/master/CuctomOperator/ort_custom_op/CMakeLists.txt).
+This CMake file includes required configurations for a unit test as well.
 
-Create a build directory from the same location and try ```cd build```. Then, and execute the command ```cmake ..``` to configure the project and build it using [].
+Create a build directory from the same location and try ```cd build```. Then, and execute the command ```cmake ..``` to configure the project and build it using ```make```.
 
-Now that you have registered your operator, you should be able to run your model and test it. You can find an example custom operator unit test [here](). 
+Now that you have registered your operator, you should be able to run your model and test it. You can find an example custom operator unit test source code [here](https://github.com/neginraoof/CustomOperators/blob/master/CuctomOperator/ort_custom_op/custom_op_test.cc). 
 
 
