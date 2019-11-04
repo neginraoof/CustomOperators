@@ -1,8 +1,7 @@
 #include <iostream>
 #include <gtest/gtest.h>
-#include "Eigen/Dense"
-
 #include "custom_op.h"
+
 // Includes for mocked test allocator
 #include "core/common/common.h"
 #include "test_allocator.h"

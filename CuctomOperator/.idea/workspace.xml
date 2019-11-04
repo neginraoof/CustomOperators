@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4ae74fdb-999a-4dd3-9e8c-db2af97fc90c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/pytorch_custom_op/export_custom_op.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ort_custom_op/main.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ort_custom_op/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ort_custom_op/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ort_custom_op/custom_op.cc" beforeDir="false" afterPath="$PROJECT_DIR$/ort_custom_op/custom_op.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ort_custom_op/custom_op.h" beforeDir="false" afterPath="$PROJECT_DIR$/ort_custom_op/custom_op.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ort_custom_op/custom_op_test.cc" beforeDir="false" afterPath="$PROJECT_DIR$/ort_custom_op/custom_op_test.cc" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,13 +17,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ort_custom_op/CMakeLists.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" selection-start-line="7" selection-end-line="7" selection-end-column="67" />
+            <state relative-caret-position="120">
+              <caret line="8" column="58" selection-start-line="8" selection-start-column="58" selection-end-line="8" selection-end-column="58" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ort_custom_op/build/CMakeCache.txt">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ort_custom_op/main.cc">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -36,18 +51,6 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pytorch_custom_op/setup.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="111" selection-start-line="5" selection-start-column="46" selection-end-line="5" selection-end-column="114" />
-              <folding>
-                <element signature="e#0#28#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pytorch_custom_op/export_custom_op.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="345">
@@ -59,16 +62,27 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ort_custom_op/custom_op.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1185">
-              <caret line="79" column="9" lean-forward="true" selection-start-line="79" selection-start-column="9" selection-end-line="79" selection-end-column="9" />
+            <state relative-caret-position="495">
+              <caret line="33" column="25" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ort_custom_op/custom_op_test.cc">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ort_custom_op/custom_op_test.cc">
+        <entry file="file://$PROJECT_DIR$/ort_custom_op/custom_op.cc">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1750" />
+            <state relative-caret-position="478">
+              <caret line="49" column="29" selection-start-line="49" selection-start-column="29" selection-end-line="49" selection-end-column="29" />
+            </state>
           </provider>
         </entry>
       </file>
@@ -83,14 +97,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>num_groups</find>
-      <find>runsess</find>
-      <find>RunSession</find>
-      <find>:GetApi().</find>
-      <find>not enough space: expected</find>
-      <find>epsilon_</find>
-      <find>onnxrun</find>
-      <find>To be equal to:</find>
       <find>epsi</find>
       <find>onnxruntime</find>
       <find>Run(</find>
@@ -99,7 +105,6 @@
       <find>session_options</find>
       <find>void com</find>
       <find>pth</find>
-      <find>OrtGetApiBase</find>
       <find>groupn</find>
       <find>int</find>
       <find>Y_tensor_shape</find>
@@ -110,9 +115,18 @@
       <find>input</find>
       <find>run</find>
       <find>struc</find>
-      <find>GroupNormKernel</find>
       <find>GroupNormCustomOp</find>
       <find>cout</find>
+      <find>GroupNormKernel</find>
+      <find>const OrtApi</find>
+      <find>conte</find>
+      <find>ort</find>
+      <find>Ort</find>
+      <find>OrtTensorDimensions</find>
+      <find>OrtGetApiBase</find>
+      <find>OrtReleas</find>
+      <find>g_ort</find>
+      <find>customop</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -135,15 +149,13 @@
         <option value="$PROJECT_DIR$/custom_op.h" />
         <option value="$PROJECT_DIR$/pytorch_custom_op/custom_group_norm.cpp" />
         <option value="$PROJECT_DIR$/pytorch_custom_op/export_custom_op.py" />
+        <option value="$PROJECT_DIR$/ort_custom_op/main.cc" />
+        <option value="$PROJECT_DIR$/ort_custom_op/custom_op.cc" />
+        <option value="$PROJECT_DIR$/ort_custom_op/Test/custom_op_test.cc" />
+        <option value="$PROJECT_DIR$/ort_custom_op/custom_op.h" />
+        <option value="$PROJECT_DIR$/ort_custom_op/Test/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/ort_custom_op/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/ort_custom_op/custom_op_test.cc" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectConfigurationFiles">
-    <option name="files">
-      <list>
-        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
       </list>
     </option>
   </component>
@@ -173,33 +185,13 @@
             <path>
               <item name="CuctomOperator" type="b2602c69:ProjectViewProjectNode" />
               <item name="CuctomOperator" type="462c0819:PsiDirectoryNode" />
-              <item name="pytorch_custom_op" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CuctomOperator" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CuctomOperator" type="462c0819:PsiDirectoryNode" />
-              <item name="pytorch_custom_op" type="462c0819:PsiDirectoryNode" />
+              <item name="ort_custom_op" type="462c0819:PsiDirectoryNode" />
               <item name="build" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="CuctomOperator" type="b2602c69:ProjectViewProjectNode" />
               <item name="CuctomOperator" type="462c0819:PsiDirectoryNode" />
               <item name="pytorch_custom_op" type="462c0819:PsiDirectoryNode" />
-              <item name="build" type="462c0819:PsiDirectoryNode" />
-              <item name="lib.linux-x86_64-3.7" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CuctomOperator" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CuctomOperator" type="462c0819:PsiDirectoryNode" />
-              <item name="pytorch_custom_op" type="462c0819:PsiDirectoryNode" />
-              <item name="build" type="462c0819:PsiDirectoryNode" />
-              <item name="temp.linux-x86_64-3.7" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CuctomOperator" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CuctomOperator" type="462c0819:PsiDirectoryNode" />
-              <item name="pytorch_custom_op" type="462c0819:PsiDirectoryNode" />
-              <item name="dist" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -212,6 +204,12 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ort_custom_op" />
+      <recent name="$PROJECT_DIR$/ort_custom_op/Test" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -242,9 +240,9 @@
     <frame x="0" y="-2" width="1920" height="1202" extended-state="6" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.26146546" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.18239325" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="0" visible="true" weight="0.38397017" />
+      <window_info anchor="bottom" id="Terminal" order="0" visible="true" weight="0.361603" />
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="2" />
       <window_info anchor="bottom" id="Message" order="3" />
@@ -313,22 +311,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ort_custom_op/custom_op_test.cc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1750" />
-      </provider>
+    <entry file="file://$PROJECT_DIR$/ort_custom_op/main.cc">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ort_custom_op/build/CMakeCache.txt">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/ort_custom_op/custom_op.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1185">
-          <caret line="79" column="9" lean-forward="true" selection-start-line="79" selection-start-column="9" selection-end-line="79" selection-end-column="9" />
+        <state relative-caret-position="495">
+          <caret line="33" column="25" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ort_custom_op/Test/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" selection-start-line="5" selection-end-line="6" selection-end-column="58" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ort_custom_op/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" selection-start-line="7" selection-end-line="7" selection-end-column="67" />
+        <state relative-caret-position="120">
+          <caret line="8" column="58" selection-start-line="8" selection-start-column="58" selection-end-line="8" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ort_custom_op/custom_op.cc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="478">
+          <caret line="49" column="29" selection-start-line="49" selection-start-column="29" selection-end-line="49" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ort_custom_op/custom_op_test.cc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
         </state>
       </provider>
     </entry>

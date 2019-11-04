@@ -31,6 +31,7 @@ template <typename T>
 struct GroupNormKernel {
 	private:
    float epsilon_;
+   Ort::CustomOpApi ort_;
 
 	public:
   GroupNormKernel(Ort::CustomOpApi ort, const OrtKernelInfo* info) : ort_(ort) {
@@ -76,9 +77,6 @@ struct GroupNormKernel {
 	    Yi = Xi * channel_scale + channel_shift;
 	  }
   }
-
- private:
-  Ort::CustomOpApi ort_;
 };
 
 struct GroupNormCustomOp : Ort::CustomOpBase<GroupNormCustomOp, GroupNormKernel<float>> {
