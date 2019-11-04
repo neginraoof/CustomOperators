@@ -14,21 +14,51 @@ Start by implementing the operator in C++. Below we have the example C++ code gr
 
 ```cpp
 #include <torch/script.h>
+#include "Eigen/Dense"
+
+template <typename T>
+using ConstEigenVectorArrayMap = Eigen::Map<const Eigen::Array<T, Eigen::Dynamic, 1>>;
+template <typename T>
+using EigenVectorArrayMap = Eigen::Map<Eigen::Array<T, Eigen::Dynamic, 1>>;
 
 torch::Tensor custom_group_norm(torch::Tensor X, torch::Tensor num_groups, torch::Tensor scale, torch::Tensor bias, torch::Tensor eps) {
-  torch::Tensor norm =
-      at::group_norm(X, static_cast<int>(num_groups.data<float>()[0]), scale, bias);
 
-  return norm.clone();
+  float* X_data = X.data<float>();
+  float* scale_data = scale.data<float>();
+  float* bias_data = bias.data<float>();
+  int num_groups_i = int(num_groups.data<float>()[0]);
+  float epsilon_ = eps.data<float>()[0];
+  torch::Tensor output = torch::zeros(X.sizes());
+  float* out = output.data<float>();
+  const int64_t N = X.size(0);
+  const int64_t C = X.size(1) / num_groups_i;  // assume [N C*num_groups H W]  per the spec
+
+  int64_t sample_size = 1;
+  for (size_t i = 2; i < X.dim(); ++i) {
+    sample_size *= X.size(i);
+  }
+  sample_size *= C;
+
+  std::vector<float> Xi;
+  for (auto i = 0; i < N * num_groups_i; ++i) {
+    ConstEigenVectorArrayMap<float> Xi(X_data + sample_size * i, sample_size);
+    const float Xi_mean = Xi.mean();
+    const float squared_norm = (Xi - Xi_mean).matrix().squaredNorm();
+    const float inv_stdev = 1.0f / std::sqrt(squared_norm / sample_size + epsilon_);
+    EigenVectorArrayMap<float> Yi(out + sample_size * i, sample_size);
+    const float channel_scale = inv_stdev * scale_data[i % (C * num_groups_i)];
+    const float channel_shift = bias_data[i % (C * num_groups_i)] - Xi_mean * channel_scale;
+    Yi = Xi * channel_scale + channel_shift;
+   }
+
+  return output;
 }
 ```
-<Headr file details>
 
 Next, you need to register this operator with TorchScript compiler using ```torch::RegisterOperator``` function in the same cpp file. The first argument is operator name and namespace separated by ```::```. The next argument is a reference to your function. 
 
 ```cpp
-static auto registry =
-  torch::RegisterOperators("mynamespace::custom_group_norm", &custom_group_norm);
+static auto registry = torch::RegisterOperators("mynamespace::custom_group_norm", &custom_group_norm);
 ```
 
 Once you have your C++ function, you can build it using ```setuptools.Extension```. Create a ```setup.py script``` in the same directory where you have your C++ code. ```CppExtension.BuildExtension``` Takes care of the required compiler flags such as required include paths, and flags required during mixed C++/CUDA mixed compilation.
@@ -41,16 +71,17 @@ from torch.utils import cpp_extension
 
 setup(name='custom_group_norm',
       ext_modules=[cpp_extension.CppExtension('custom_group_norm', ['custom_group_norm.cpp'])],
+                    include_dirs = [<path_to_eigen_header_file>])],
       cmdclass={'build_ext': cpp_extension.BuildExtension})
 ```
 
-<Python binding examples>
+Make sure to include required header files in ```include_dirs``` list.
+
+[Python binding examples ?]
 
 Now, running the command ```python setup.py install``` from your source directory, you can to build and install your extension.
-The shared object should be generated under ```build``` directory. You can load it using:
-```torch.ops.load_library("<path_to_object_file>)```
-Then you can refer to your custom operator using:
-```torch.ops.<namespace_name>.<operator_name>```
+The shared object should be generated under ```build``` directory. You can load it using: ```torch.ops.load_library("<path_to_object_file>)```
+Then you can refer to your custom operator: ```torch.ops.<namespace_name>.<operator_name>```
 
 # Export the Operator to ONNX
 
@@ -69,11 +100,30 @@ In the symbolic method, you need to implement the ONNX subgraph to use for expor
 In our example, we want to use a custom ONNX op from our custom domain. Therefore, we need to add the domain name prefix in the following format:
 ```"<domain_name>::<onnx_op>"```
 
-Now, You can create a ```torch.nn.module``` using your custom op, and export it to ONNX using ```torch.utils.export```. Make sure to specify input and output names at export, as this will help you later when implementing the kernel for this operator:
+Now, You can create a ```torch.nn.module``` using your custom op, and export it to ONNX using ```torch.onnx.export```. Make sure to specify input and output names at export, as this will help you later when implementing the kernel for this operator:
 
-[Add export code]
+```python 
+import torch
 
-Now, to be able to use this custom ONNX operator for inferencing, we add our custom operator to an inference engine. If you are using existing ONNX ops only, you do not need to go through this last step.
+def export_custom_op():
+    class CustomModel(torch.nn.Module):
+        def forward(self, x, num_groups, scale, bias):
+            return torch.ops.mydomain.custom_group_norm(x, num_groups, scale, bias, torch.tensor([0.]))
+
+    X = torch.randn(3, 2, 1, 2)
+    num_groups = torch.tensor([2.])
+    scale = torch.tensor([2., 1.])
+    bias = torch.tensor([1., 0.])
+    inputs = (X, num_groups, scale, bias)
+
+    f = './model.onnx'
+    torch.onnx.export(CustomModel(), inputs, f,
+                       opset_version=9,
+                       example_outputs=None,
+                       input_names=["X", "num_groups", "scale", "bias"], output_names=["Y"])
+```
+
+To be able to use this custom ONNX operator for inferencing, we add our custom operator to an inference engine. If you are using existing ONNX ops only, you do not need to go through this last step.
 
 
 # Implement the Operator in ONNX Runtime #
@@ -93,19 +143,17 @@ custom_op_domain.Add(&custom_op);
 Here you can find our example group norm implementation along with a sample ONNX Runtime unit test to verify the expected output.
 To build your custom operator with the reuiqred dependencies, you can use cmake. Add a file named ```CMakeLists.txt``` under the same directory where you have the ONNX Runtime source files.
 
-You can link the reuiqred libraries using 
+You can link the reuiqred libraries using ```target_link_libraries```:
+find_library(ONNXRUNTIME_LIBRARY onnxruntime HINTS <PATH_TO_YOUR_INSTALLATION_DIRECTORY>)
+target_link_libraries(customop PUBLIC ${ONNXRUNTIME_LIBRARY})
 
+And include the required headers using ```include_directories```
+include_directories(<PATH_TO_EIGEN_HEADER_FILE>)
 
-And include the required headers using
+The example ```CMakeLists.txt``` file we could be found [here]().
 
-
-The example ```CMakeLists.txt``` file we have is:
-[Put cmake file]
-
-[Remember to replace path]
 Create a build directory from the same location and try ```cd build```. Then, and execute the command ```cmake ..``` to configure the project and build it using [].
 
-Now that you have registered your operator, you should be able to run yout model and test it. You can find an example custom op unit test [here](). 
+Now that you have registered your operator, you should be able to run your model and test it. You can find an example custom operator unit test [here](). 
 
-================================================================
 
