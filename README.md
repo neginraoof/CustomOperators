@@ -198,7 +198,7 @@ custom_op_domain.Add(&custom_op);
 In the repository, you can find our example group norm implementation along with a sample ONNX Runtime unit test to verify the expected output.
 To build your custom operator with the reuiqred dependencies, you can use cmake. Add a file named ```CMakeLists.txt``` under the same directory where you have the ONNX Runtime source files.
 
-You can link the reuiqred libraries using ```target_link_libraries```:
+You can link the reuiqred libraries using ```target_link_libraries``` 
 find_library(ONNXRUNTIME_LIBRARY onnxruntime HINTS <PATH_TO_YOUR_INSTALLATION_DIRECTORY>)
 target_link_libraries(customop PUBLIC ${ONNXRUNTIME_LIBRARY})
 
