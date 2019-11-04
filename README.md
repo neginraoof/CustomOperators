@@ -80,8 +80,11 @@ Make sure to include required header files in ```include_dirs``` list.
 [Python binding examples ?]
 
 Now, running the command ```python setup.py install``` from your source directory, you can to build and install your extension.
-The shared object should be generated under ```build``` directory. You can load it using: ```torch.ops.load_library("<path_to_object_file>)```
-Then you can refer to your custom operator: ```torch.ops.<namespace_name>.<operator_name>```
+The shared object should be generated under ```build``` directory. 
+You can load it using:
+```torch.ops.load_library("<path_to_object_file>)```
+Then you can refer to your custom operator: 
+```torch.ops.<namespace_name>.<operator_name>```
 
 # Export the Operator to ONNX
 
@@ -133,8 +136,59 @@ First, you need to create a custim domain of type ```Ort::CustomOpDomain```. Thi
 ```cpp
 Ort::CustomOpDomain custom_op_domain("org.pytorch.mydomain");
 ```
-Next, you need to create a custom kernel and  ```ORT::CustomOp``` struct, and add it to your custom domain. You can find an example [here](https://github.com/neginraoof/CustomOperators/blob/master/CuctomOperator/ort_custom_op/custom_op.h)
-The Compute function is implemented [here](https://github.com/neginraoof/CustomOperators/blob/master/CuctomOperator/ort_custom_op/custom_op.cc).
+Next, you need to create a custom kernel and  ```ORT::CustomOp``` struct, and add it to your custom domain:
+
+```cpp
+struct Input {
+  const char* name;
+  std::vector<int64_t> dims;
+  std::vector<float> values;
+};
+
+const OrtApi* g_ort = OrtGetApiBase()->GetApi(ORT_API_VERSION);
+const OrtApi* Ort::g_api = OrtGetApiBase()->GetApi(ORT_API_VERSION);
+
+struct OrtTensorDimensions : std::vector<int64_t> {
+  OrtTensorDimensions(Ort::CustomOpApi ort, const OrtValue* value) {
+    OrtTensorTypeAndShapeInfo* info = ort.GetTensorTypeAndShape(value);
+    std::vector<int64_t>::operator=(ort.GetTensorShape(info));
+    ort.ReleaseTensorTypeAndShapeInfo(info);
+  }
+};
+
+template <typename T>
+struct GroupNormKernel {
+	private:
+   float epsilon_;
+   Ort::CustomOpApi ort_;
+
+	public:
+  GroupNormKernel(Ort::CustomOpApi ort, const OrtKernelInfo* info) : ort_(ort) {
+    epsilon_ = ort_.KernelInfoGetAttribute<float>(info, "epsilon");
+  }
+
+  void Compute(OrtKernelContext* context);
+};
+
+
+struct GroupNormCustomOp : Ort::CustomOpBase<GroupNormCustomOp, GroupNormKernel<float>> {
+  void* CreateKernel(Ort::CustomOpApi api, const OrtKernelInfo* info) { return new GroupNormKernel<float>(api, info); };
+  const char* GetName() const { return "testgroupnorm"; };
+
+  size_t GetInputTypeCount() const { return 4; };
+  ONNXTensorElementDataType GetInputType(size_t /*index*/) const { return ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT; };
+
+  size_t GetOutputTypeCount() const { return 1; };
+  ONNXTensorElementDataType GetOutputType(size_t /*index*/) const { return ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT; };
+};
+```
+Note that you might need to add these two lines below to define ```Ort::g_ort``` and prevent ```undefined reference to 'Ort::g_api'``` error at compile time.
+
+```cpp
+const OrtApi* g_ort = OrtGetApiBase()->GetApi(ORT_API_VERSION);
+const OrtApi* Ort::g_api = OrtGetApiBase()->GetApi(ORT_API_VERSION);
+```
+The Compute function is implemented [in the source file](https://github.com/neginraoof/CustomOperators/blob/master/CuctomOperator/ort_custom_op/custom_op.cc).
 Once you have the custom kernel and schema, you can add them to the domain using the C API as below:
 ```cpp
 GroupNormCustomOp custom_op;
@@ -152,9 +206,9 @@ And include the required headers using ```include_directories```
 include_directories(<PATH_TO_EIGEN_HEADER_FILE>)
 
 An example ```CMakeLists.txt``` file we could be found [here](https://github.com/neginraoof/CustomOperators/blob/master/CuctomOperator/ort_custom_op/CMakeLists.txt).
-This CMake file includes required configurations for a unit test as well.
+This cmake file includes required configurations for compiling the unit test code as well.
 
-Create a build directory from the same location and try ```cd build```. Then, and execute the command ```cmake ..``` to configure the project and build it using ```make```.
+Once you have the cmake file, create a build directory from the same location and try ```cd build```. Execute the command ```cmake ..``` to configure the project and build it using ```make```.
 
 Now that you have registered your operator, you should be able to run your model and test it. You can find an example custom operator unit test source code [here](https://github.com/neginraoof/CustomOperators/blob/master/CuctomOperator/ort_custom_op/custom_op_test.cc). 
 
