@@ -1,3 +1,0 @@
-/home/neraoof/PycharmProjects/CuctomOperator/CMakeFiles/rebuild_cache.dir
-/home/neraoof/PycharmProjects/CuctomOperator/CMakeFiles/customop.dir
-/home/neraoof/PycharmProjects/CuctomOperator/CMakeFiles/edit_cache.dir
