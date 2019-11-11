@@ -9,22 +9,23 @@ set(SOURCE custom_op.h)
 add_executable(customop ${SOURCE} ${HEADER} ${TEST_SOURCE})
 
 #Include path to header files
-include_directories(/home/neraoof/onnxruntime/include/onnxruntime)
-include_directories(/home/neraoof/onnxruntime/cmake/external/eigen)
-include_directories(/home/neraoof/onnxruntime/onnxruntime/test/util/include)
-include_directories(/home/neraoof/onnxruntime/onnxruntime)
+include_directories(<PATH_TO_ONNXRUNTIME_INCLUDE_DIR>)
+include_directories(<PATH_TO_ONNXRUNTIME_DIR>)
+include_directories(<PATH_TO_EIGEN_DIR>)
+include_directories(<PATH_TO_ONNXRUNTIME_TEST_UTIL_INCLUDE_DIR>)
 
-
-find_library(GTEST_LIBRARY gtest HINTS /usr/lib/x86_64-linux-gnu)
-find_library(PROTOBUF_LIBRARY protobuf HINTS /usr/lib/x86_64-linux-gnu)
-find_library(THREAD_LIBRARY pthread HINTS /usr/lib/x86_64-linux-gnu)
-find_library(ONNXRUNTIME_MOCKED_ALLOCATOR_LIBRARY onnxruntime_mocked_allocator HINTS /home/neraoof/onnxruntime/build/Linux/RelWithDebInfo)
-find_library(ONNXRUNTIME_LIBRARY onnxruntime HINTS /home/neraoof/onnxruntime/build/Linux/RelWithDebInfo)
-
-
-target_link_libraries(customop PUBLIC ${ONNXRUNTIME_MOCKED_ALLOCATOR_LIBRARY})
+#User libraires path could be: /usr/lib/x86_64-linux-gnu
+find_library(GTEST_LIBRARY gtest HINTS <PATH_TO_USER_LIB>)
 target_link_libraries(customop PUBLIC ${GTEST_LIBRARY})
+
+find_library(PROTOBUF_LIBRARY protobuf HINTS <PATH_TO_USER_LIB>)
 target_link_libraries(customop PUBLIC ${PROTOBUF_LIBRARY})
-target_link_libraries(customop PUBLIC ${GTEST_LIBRARY})
+
+find_library(THREAD_LIBRARY pthread HINTS <PATH_TO_USER_LIB>)
 target_link_libraries(customop PUBLIC ${THREAD_LIBRARY})
+
+find_library(ONNXRUNTIME_MOCKED_ALLOCATOR_LIBRARY onnxruntime_mocked_allocator HINTS <PATH_TO_ONNXRUNTIME_LIB>)
+target_link_libraries(customop PUBLIC ${ONNXRUNTIME_MOCKED_ALLOCATOR_LIBRARY})
+
+find_library(ONNXRUNTIME_LIBRARY onnxruntime HINTS <PATH_TO_ONNXRUNTIME_LIB>)
 target_link_libraries(customop PUBLIC ${ONNXRUNTIME_LIBRARY})
