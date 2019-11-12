@@ -2,12 +2,9 @@
 
   - [1](#step1) - Adding the custom operator implementation in C++ and registering it with TorchScript
   - [2](#step2) - Exporting the custom Operator to ONNX, using:
-  
-            - a combination of existing ONNX ops
-  
-          or
-  
-  		- a custom ONNX Operator
+                - a combination of existing ONNX ops
+                or
+                - a custom ONNX Operator
   - [3](#step3) - Adding the custom operator implementation and registering it in ONNX Runtime
 
 <a name="step1"></a>
