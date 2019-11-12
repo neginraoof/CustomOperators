@@ -55,6 +55,7 @@ torch::Tensor custom_group_norm(torch::Tensor X, torch::Tensor num_groups, torch
 }
 ```
 For this example, we use the [Eigen](https://eigen.tuxfamily.org/dox/index.html) library. To do this, we just need download and extract Eigen header files. You can find this library [here](https://eigen.tuxfamily.org/dox/GettingStarted.html).
+<br />
 Next, you need to register this operator with TorchScript compiler using ```torch::RegisterOperator``` function in the same cpp file. The first argument is operator name and namespace separated by ```::```. The next argument is a reference to your function. 
 
 ```cpp
