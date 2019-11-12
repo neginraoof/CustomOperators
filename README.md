@@ -7,7 +7,7 @@
   
           or
   
-  	    - a custom ONNX Operator
+  		- a custom ONNX Operator
   - [3](#step3) - Adding the custom operator implementation and registering it in ONNX Runtime
 
 <a name="step1"></a>
