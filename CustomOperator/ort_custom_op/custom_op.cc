@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Eigen/Dense"
-#include "core/session/onnxruntime_cxx_api.h"
+#include "onnxruntime_cxx_api.h"
 
 template <typename T>
 using ConstEigenVectorArrayMap = Eigen::Map<const Eigen::Array<T, Eigen::Dynamic, 1>>;

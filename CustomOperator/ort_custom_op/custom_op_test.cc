@@ -1,11 +1,7 @@
 #include <iostream>
 #include <gtest/gtest.h>
 #include "custom_op.h"
-#include "core/session/onnxruntime_cxx_api.h"
-
-// mocked allocator for test
-#include "test_allocator.h"
-#include "core/common/common.h"
+#include "onnxruntime_cxx_api.h"
 
 #define TSTR(X) (X)
 typedef const char* PATH_TYPE;
@@ -24,39 +20,6 @@ class CApiTestImpl : public ::testing::Test {
 typedef CApiTestImpl<false> CApiTest;
 // END LOGGING
 
-void RunSession(OrtAllocator* allocator, Ort::Session& session_object,
-                const std::vector<Input>& inputs,
-                const char* output_name,
-                const std::vector<int64_t>& dims_y,
-                const std::vector<float>& values_y,
-                Ort::Value* output_tensor) {
-  std::vector<Ort::Value> ort_inputs;
-  std::vector<const char*> input_names;
-  for (size_t i = 0; i < inputs.size(); i++) {
-    input_names.emplace_back(inputs[i].name);
-    ort_inputs.emplace_back(Ort::Value::CreateTensor<float>(allocator->Info(allocator), const_cast<float*>(inputs[i].values.data()), inputs[i].values.size(), inputs[i].dims.data(), inputs[i].dims.size()));
-	}
-
-  std::vector<Ort::Value> ort_outputs;
-  if (output_tensor){
-    session_object.Run(Ort::RunOptions{nullptr}, input_names.data(), ort_inputs.data(), ort_inputs.size(), &output_name, output_tensor, 1);
-  } else {
-    ort_outputs = session_object.Run(Ort::RunOptions{nullptr}, input_names.data(), ort_inputs.data(), ort_inputs.size(), &output_name, 1);
-    ASSERT_EQ(ort_outputs.size(), 1);
-    output_tensor = &ort_outputs[0];
-  }
-
-  auto type_info = output_tensor->GetTensorTypeAndShapeInfo();
-  ASSERT_EQ(type_info.GetShape(), dims_y);
-  size_t total_len = type_info.GetElementCount();
-  ASSERT_EQ(values_y.size(), total_len);
-
-  float* f = output_tensor->GetTensorMutableData<float>();
-  for (size_t i = 0; i != total_len; ++i) {
-    ASSERT_EQ(values_y[i], f[i]);
-  }
-}
-
 template <typename T>
 void TestInference(Ort::Env& env, T model_uri,
                    const std::vector<Input>& inputs,
@@ -72,28 +35,21 @@ void TestInference(Ort::Env& env, T model_uri,
   }
 
   Ort::Session session(env, model_uri, session_options);
-  auto default_allocator = onnxruntime::make_unique<MockedOrtAllocator>();
-  // Now run
-  //without preallocated output tensor
-  RunSession(default_allocator.get(),
-             session,
-             inputs,
-             output_name,
-             expected_dims_y,
-             expected_values_y,
-             nullptr);
-  //with preallocated output tensor
-  Ort::Value value_y = Ort::Value::CreateTensor<float>(default_allocator.get(), expected_dims_y.data(), expected_dims_y.size());
 
-  //test it twice
-  for (int i = 0; i != 2; ++i)
-    RunSession(default_allocator.get(),
-               session,
-               inputs,
-               output_name,
-               expected_dims_y,
-               expected_values_y,
-               &value_y);
+  auto memory_info = Ort::MemoryInfo::CreateCpu(OrtDeviceAllocator, OrtMemTypeCPU);
+  std::vector<Ort::Value> input_tensors;
+  std::vector<const char*> input_names;
+  Ort::Value output_tensor{nullptr};
+  output_tensor = Ort::Value::CreateTensor<float>(memory_info, const_cast<float*>(expected_values_y.data()), expected_values_y.size(), expected_dims_y.data(), expected_dims_y.size());
+
+  for (size_t i = 0; i < inputs.size(); i++) {
+    input_names.emplace_back(inputs[i].name);
+    input_tensors.emplace_back(Ort::Value::CreateTensor<float>(memory_info, const_cast<float*>(inputs[i].values.data()), inputs[i].values.size(), inputs[i].dims.data(), inputs[i].dims.size()));
+	}
+
+  std::vector<Ort::Value> ort_outputs;
+  ort_outputs = session.Run(Ort::RunOptions{nullptr}, input_names.data(), input_tensors.data(), input_tensors.size(), &output_name, 1);
+
 }
 
 static constexpr PATH_TYPE MODEL_URI = TSTR("../../pytorch_custom_op/model.onnx");
@@ -133,7 +89,7 @@ TEST_P(CApiTestWithProvider, simple) {
   std::vector<float> expected_values_y = { 3.0000f, -1.0000f, -1.0000f,  1.0000f, 2.9996f, -0.9996f, -0.9999f,  0.9999f,  -0.9996f,  2.9996f, -1.0000f,  1.0000f};
 
   GroupNormCustomOp custom_op;
-  Ort::CustomOpDomain custom_op_domain("mydomain");
+  Ort::CustomOpDomain custom_op_domain("org.pytorch.mydomain");
   custom_op_domain.Add(&custom_op);
 
   TestInference<PATH_TYPE>(env_, MODEL_URI, inputs, "Y", expected_dims_y, expected_values_y, GetParam(), custom_op_domain);
