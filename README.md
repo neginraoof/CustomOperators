@@ -153,9 +153,6 @@ struct Input {
   std::vector<float> values;
 };
 
-const OrtApi* g_ort = OrtGetApiBase()->GetApi(ORT_API_VERSION);
-const OrtApi* Ort::g_api = OrtGetApiBase()->GetApi(ORT_API_VERSION);
-
 struct OrtTensorDimensions : std::vector<int64_t> {
   OrtTensorDimensions(Ort::CustomOpApi ort, const OrtValue* value) {
     OrtTensorTypeAndShapeInfo* info = ort.GetTensorTypeAndShape(value);
@@ -190,12 +187,7 @@ struct GroupNormCustomOp : Ort::CustomOpBase<GroupNormCustomOp, GroupNormKernel<
   ONNXTensorElementDataType GetOutputType(size_t /*index*/) const { return ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT; };
 };
 ```
-Note that you might need to add these two lines below to define ```Ort::g_ort``` and prevent ```undefined reference to 'Ort::g_api'``` error at compile time.
 
-```cpp
-const OrtApi* g_ort = OrtGetApiBase()->GetApi(ORT_API_VERSION);
-const OrtApi* Ort::g_api = OrtGetApiBase()->GetApi(ORT_API_VERSION);
-```
 The Compute function is implemented [in the source file](https://github.com/neginraoof/CustomOperators/blob/master/CuctomOperator/ort_custom_op/custom_op.cc).
 Once you have the custom kernel and schema, you can add them to the domain using the C API as below:
 ```cpp
@@ -218,7 +210,7 @@ include_directories(<PATH_TO_EIGEN_HEADER_FILE>)
 ```
 
 An example ```CMakeLists.txt``` file we could be found [here](https://github.com/neginraoof/CustomOperators/blob/master/CuctomOperator/ort_custom_op/CMakeLists.txt).
-This cmake file includes required configurations for compiling the unit test code as well.
+This cmake file links required libraries for compiling the unit test code as well.
 Other dependency libraries are:
 ```buildoutcfg
 googletest version 1.8.0-6
