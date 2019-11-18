@@ -1,13 +1,13 @@
-
 # Required Steps
 
-  - Adding the custom operator implementation in C++ and registering it with TorchScript
-  - Exporting the custom Operator to ONNX, using:
-            - a combination of existing ONNX ops
-            or
-            - a custom ONNX Operator
-  - Adding the custom operator implementation and registering it in ONNX Runtime
+  - [1](#step1) - Adding the custom operator implementation in C++ and registering it with TorchScript
+  - [2](#step2) - Exporting the custom Operator to ONNX, using:
+  <br />             - a combination of existing ONNX ops
+  <br />              or
+  <br />              - a custom ONNX Operator
+  - [3](#step3) - Adding the custom operator implementation and registering it in ONNX Runtime
 
+<a name="step1"></a>
 # Implement the Custom Operator
 For this step, you need to have PyTorch installed on your system. Try installing PyTorch Nightly version 1.3.? or higher from [here](https://pytorch.org/get-started/locally/).
 If you have a custom op that you need to add in PyTorch as a C++ extension, you need to implement the op and build it with ```setuptools```.
@@ -55,7 +55,8 @@ torch::Tensor custom_group_norm(torch::Tensor X, torch::Tensor num_groups, torch
   return output;
 }
 ```
-
+For this example, we use the [Eigen](https://eigen.tuxfamily.org/dox/index.html) library. To do this, we just need download and extract Eigen header files. You can find this library [here](https://eigen.tuxfamily.org/dox/GettingStarted.html).
+<br />
 Next, you need to register this operator with TorchScript compiler using ```torch::RegisterOperator``` function in the same cpp file. The first argument is operator name and namespace separated by ```::```. The next argument is a reference to your function. 
 
 ```cpp
@@ -85,6 +86,7 @@ You can load it using:
 Then you can refer to your custom operator: 
 ```torch.ops.<namespace_name>.<operator_name>```
 
+<a name="step2"></a>
 # Export the Operator to ONNX
 
 You can export your custom operator using existing ONNX ops, or you can create custom ONNX ops to use.
@@ -127,7 +129,7 @@ def export_custom_op():
 
 To be able to use this custom ONNX operator for inferencing, we add our custom operator to an inference engine. If you are using existing ONNX ops only, you do not need to go through this last step.
 
-
+<a name="step3"></a>
 # Implement the Operator in ONNX Runtime #
 
 The last step is to implement this op in ONNX Runtime, and build it. For this step, you need to have ONNX Runtime installed on your system. You can install ONNXRuntime v1.0.0 using:
@@ -136,8 +138,9 @@ pip install onnxruntime
 ```
 or find the nuget package from [here](https://www.nuget.org/packages/Microsoft.ML.OnnxRuntime/).
 
-We show how to do this using their custom operator C API's [APIs are experimental for now.]
+The last step is to implement this op in ONNX Runtime, and build. We show how to do this using the custom operator C API's (API's are experimental for now).
 First, you need to create a custom domain of type ```Ort::CustomOpDomain```. This domain name is the same name provided in the symbolic method (step 2) when exporting the model.
+
 ```cpp
 Ort::CustomOpDomain custom_op_domain("org.pytorch.mydomain");
 ```
