@@ -1,16 +1,16 @@
 #include <iostream>
 #include <gtest/gtest.h>
 #include "custom_op.h"
-
-// Includes for mocked test allocator
-#include "core/common/common.h"
-#include "test_allocator.h"
 #include "core/session/onnxruntime_cxx_api.h"
+
+// mocked allocator for test
+#include "test_allocator.h"
+#include "core/common/common.h"
 
 #define TSTR(X) (X)
 typedef const char* PATH_TYPE;
 
-// LOGGING
+// LOGGING TEST
 template <bool use_customer_logger>
 class CApiTestImpl : public ::testing::Test {
  protected:
@@ -133,7 +133,7 @@ TEST_P(CApiTestWithProvider, simple) {
   std::vector<float> expected_values_y = { 3.0000f, -1.0000f, -1.0000f,  1.0000f, 2.9996f, -0.9996f, -0.9999f,  0.9999f,  -0.9996f,  2.9996f, -1.0000f,  1.0000f};
 
   GroupNormCustomOp custom_op;
-  Ort::CustomOpDomain custom_op_domain("org.pytorch.mydomain");
+  Ort::CustomOpDomain custom_op_domain("mydomain");
   custom_op_domain.Add(&custom_op);
 
   TestInference<PATH_TYPE>(env_, MODEL_URI, inputs, "Y", expected_dims_y, expected_values_y, GetParam(), custom_op_domain);

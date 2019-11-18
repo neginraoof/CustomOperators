@@ -9,6 +9,7 @@
   - Adding the custom operator implementation and registering it in ONNX Runtime
 
 # Implement the Custom Operator
+For this step, you need to have PyTorch installed on your system. Try installing PyTorch Nightly version 1.3.? or higher from [here](https://pytorch.org/get-started/locally/).
 If you have a custom op that you need to add in PyTorch as a C++ extension, you need to implement the op and build it with ```setuptools```.
 Start by implementing the operator in C++. Below we have the example C++ code group norm operator:
 
@@ -77,8 +78,6 @@ setup(name='custom_group_norm',
 
 Make sure to include required header files in ```include_dirs``` list.
 
-[Python binding examples ?]
-
 Now, running the command ```python setup.py install``` from your source directory, you can to build and install your extension.
 The shared object should be generated under ```build``` directory. 
 You can load it using:
@@ -131,12 +130,18 @@ To be able to use this custom ONNX operator for inferencing, we add our custom o
 
 # Implement the Operator in ONNX Runtime #
 
-The last step is to implement this op in ONNX Runtime, and build it. We show how to do this using their custom operator C API's [APIs are experimental for now.]
-First, you need to create a custim domain of type ```Ort::CustomOpDomain```. This domain name is the same name provided in the symbolic method (step 2) when exporting the model [with the prefix ```org.pytorch.```. need to fix this.]
+The last step is to implement this op in ONNX Runtime, and build it. For this step, you need to have ONNX Runtime installed on your system. You can install ONNXRuntime v1.0.0 using:
+```
+pip install onnxruntime
+```
+or find the nuget package from [here](https://www.nuget.org/packages/Microsoft.ML.OnnxRuntime/).
+
+We show how to do this using their custom operator C API's [APIs are experimental for now.]
+First, you need to create a custom domain of type ```Ort::CustomOpDomain```. This domain name is the same name provided in the symbolic method (step 2) when exporting the model.
 ```cpp
 Ort::CustomOpDomain custom_op_domain("org.pytorch.mydomain");
 ```
-Next, you need to create a custom kernel and  ```ORT::CustomOp``` struct, and add it to your custom domain:
+Next, you need to create a ```ORT::CustomOp``` object, write its kernel implementation, and add it to your custom domain:
 
 ```cpp
 struct Input {
@@ -196,9 +201,9 @@ custom_op_domain.Add(&custom_op);
 ```
 
 In the repository, you can find our example group norm implementation along with a sample ONNX Runtime unit test to verify the expected output.
-To build your custom operator with the reuiqred dependencies, you can use cmake. Add a file named ```CMakeLists.txt``` under the same directory where you have the ONNX Runtime source files.
+You can use cmake to build your custom operator with the required dependencies. Add a file named ```CMakeLists.txt``` under the same directory where you have your source files.
 
-You can link the reuiqred libraries using ```target_link_libraries``` :
+You can link the required libraries in your cmake file using ```target_link_libraries``` :
 ```
 find_library(ONNXRUNTIME_LIBRARY onnxruntime HINTS <PATH_TO_YOUR_INSTALLATION_DIRECTORY>)
 target_link_libraries(customop PUBLIC ${ONNXRUNTIME_LIBRARY})
@@ -211,6 +216,11 @@ include_directories(<PATH_TO_EIGEN_HEADER_FILE>)
 
 An example ```CMakeLists.txt``` file we could be found [here](https://github.com/neginraoof/CustomOperators/blob/master/CuctomOperator/ort_custom_op/CMakeLists.txt).
 This cmake file includes required configurations for compiling the unit test code as well.
+Other dependency libraries are:
+```buildoutcfg
+googletest version 1.8.0-6
+protocol buffer version 3.8.0
+```
 
 Once you have the cmake file, create a build directory from the same location and try ```cd build```. Execute the command ```cmake ..``` to configure the project and build it using ```make``` command.
 
