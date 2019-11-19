@@ -9,7 +9,7 @@
 
 <a name="step1"></a>
 # Implement the Custom Operator
-For this step, you need to have PyTorch installed on your system. Try installing PyTorch Nightly version 1.3.? or higher from [here](https://pytorch.org/get-started/locally/).
+For this step, you need to have PyTorch installed on your system. Try installing PyTorch nightly build from [here](https://pytorch.org/get-started/locally/).
 If you have a custom op that you need to add in PyTorch as a C++ extension, you need to implement the op and build it with ```setuptools```.
 Start by implementing the operator in C++. Below we have the example C++ code group norm operator:
 
