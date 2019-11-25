@@ -26,9 +26,10 @@ def export_custom_op():
 
     f = './model.onnx'
     torch.onnx.export(CustomModel(), inputs, f,
-                       opset_version=9,
-                       example_outputs=None,
-                       input_names=["X", "num_groups", "scale", "bias"], output_names=["Y"])
+                      opset_version=9,
+                      example_outputs=None,
+                      input_names=["X", "num_groups", "scale", "bias"], output_names=["Y"],
+                      custom_opsets={"mydomain": 1})
 
 
 
